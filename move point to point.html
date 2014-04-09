@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="modernizr.custom.11485.js"></script>
+    <link type="text/css" rel="stylesheet" href="stylesheet.css"/>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div style="position: absolute; top: 10px; left: 10px;">
+    <canvas id="canvasOne" width="1000" height="1000">
+        Your browser does not support HTML5 Canvas.
+    </canvas>
+</div>
+
+<script type="text/javascript">
+
+    window.addEventListener('load', eventWindowLoaded, false);
+    function eventWindowLoaded() {
+
+        gameLoop();
+        console.log('a');
+    }
+
+    theCanvas = document.getElementById("canvasOne");
+    context = theCanvas.getContext("2d");
+
+
+    function  drawScreen (object, xunits, yunits) {
+
+        context.clearRect(0, 0, theCanvas.width, theCanvas.height);
+
+        // Create ball
+        console.log('old', object.x, object.y);
+        object.x += xunits;
+        object.y += yunits;
+        console.log('new', object.x, object.y);
+//        object.draw(context);
+        var img = new Image();
+        img.src =  "photos/xwing.png";
+        context.drawImage(img, object.x, object.y);
+        console.log("drawn")
+    }
+
+    // Global
+    var speed = 5;
+
+    function Ship(x, y, username) {
+        this.x = x;
+        this.y = y;
+        this.target_x = x;
+        this.target_y = y;
+        this.username = '';
+        this.hp = 0;
+        this.img = "photos/xwing.png";
+
+        this.draw = function(context) {
+
+            var img = new Image;
+            img.src =  "photos/xwing.png";
+
+//            img.src =  "photos/xwing.png";
+            context.drawImage(img, this.x, this.y);
+        };
+        this.move = function(x, y) {
+            this.x = x % c.width;
+            this.y = y % c.height;
+        };
+        this.draw(context);
+    }
+
+    ship = new Ship(100, 100, 'loljk');
+
+    function moveObject(object, x, y) {
+        // object: an object with x and y coordinates
+        // x, y: coordinates to move object to
+        console.log('move object');
+        var dx = Math.abs(object.x - x);
+        var dy = Math.abs(object.y - y);
+        var distance = Math.sqrt(dx * dx + dy * dy);
+        var moves = distance / speed;
+        var xunits = dx / moves;
+        var yunits = dy / moves;
+
+
+
+        function move() {
+            while (moves > 0) {
+                console.log('moving', moves);
+                drawScreen(object, xunits, yunits);
+                moves--;
+            }
+        }
+        window.setTimeout(move, 10);
+    }
+
+
+    function gameLoop() {
+        console.log("starting");
+        moveObject(ship, 300, 400);
+        console.log('moved');
+//        console.log('gameloop', context);
+//        var img = new Image();
+//        img.src =  "photos/xwing.png";
+//        context.drawImage(img, 100, 100);
+    }
+
+
+
+
+
+</script>
+</body>
+</html>
